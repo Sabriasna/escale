@@ -7,445 +7,726 @@
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0A0A0C; --bg2:#121115; --panel:#18171C; --line:#2A2830;
-  --cream:#F3ECE1; --muted:#A9A39A; --glow:#E8B57E; --glow2:#F6D3A8;
-  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Jost',system-ui,sans-serif;
-}
+:root{--ink:#111111;--ink2:#2B2B2B;--muted:#5E5B57;--line:#E6E2DC;--soft:#F7F5F1;--bg:#FFFFFF;--glow:#E9A866;--f:'Montserrat',system-ui,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--cream);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--f);color:var(--ink);background:var(--bg);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-.wrap{width:min(1180px,92vw);margin:0 auto}
-.eyebrow{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--glow);font-weight:400}
-h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.1}
-h2{font-size:clamp(34px,4.4vw,56px)}
-h2 em,h1 em{font-style:italic;color:var(--glow2)}
-.lead{color:var(--muted);font-size:18px;max-width:620px}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:999px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:400;border:1px solid var(--cream);transition:.25s;cursor:pointer;font-family:var(--sans);background:none;color:var(--cream)}
-.btn:hover{background:var(--cream);color:var(--bg)}
-.btn.solid{background:var(--glow);border-color:var(--glow);color:#1A1208}
-.btn.solid:hover{background:var(--glow2);border-color:var(--glow2)}
-section{padding:120px 0}
+button{font-family:inherit;cursor:pointer}
+.wrap{width:min(1320px,92vw);margin:0 auto}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s, border-color .3s;border-bottom:1px solid transparent}
-nav.scrolled{background:rgba(10,10,12,.86);backdrop-filter:blur(12px);border-color:var(--line)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{height:36px}
-.brand span{font-size:20px;letter-spacing:.42em;font-weight:300}
-.links{display:flex;gap:30px;align-items:center}
-.links a{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);transition:color .2s}
-.links a:hover{color:var(--cream)}
-.links .btn{padding:10px 20px;color:var(--cream)}
-.burger{display:none;background:none;border:0;color:var(--cream);font-size:26px;cursor:pointer}
+header.nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .3s}
+header.nav.scrolled{border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;height:84px;gap:28px}
+.brand{display:flex;align-items:center;gap:16px;padding-right:30px;border-right:1px solid #CFCAC3;height:30px}
+.brand .ic{height:46px;margin:-8px 0}
+.brand .wm{height:20px}
+.menu{display:flex;gap:clamp(18px,3vw,54px);margin-left:clamp(10px,3vw,60px);flex:1}
+.menu a{font-size:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;padding:8px 0;border-bottom:2px solid transparent;transition:border-color .2s}
+.menu a.active{font-weight:600;border-color:var(--ink)}
+.menu a:hover{border-color:#BDB7AF}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:999px;padding:14px 32px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;transition:transform .2s, background .2s;white-space:nowrap}
+.btn:hover{background:#333;transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--soft)}
+.btn .arr{font-size:18px;line-height:1;font-weight:400}
+.burger{display:none;margin-left:auto;background:none;border:0;font-size:26px}
+
+/* PAGES */
+.page{display:none;animation:pg .5s ease}
+.page.on{display:block}
+@keyframes pg{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* HERO */
-.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:0 0 110px;overflow:hidden}
-.hero .bg{position:absolute;inset:0;background:url(img/salle.jpg) center/cover;transform:scale(1.06);animation:zoom 18s ease-out forwards}
-@keyframes zoom{to{transform:scale(1)}}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,12,.55) 0%,rgba(10,10,12,.25) 40%,rgba(10,10,12,.92) 88%,var(--bg) 100%)}
-.hero .wrap{position:relative;z-index:2}
-.hero h1{font-size:clamp(48px,8vw,108px);margin:18px 0 22px;max-width:900px}
-.hero p.base{font-size:19px;color:#D9D2C7;max-width:560px;margin-bottom:38px}
-.hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
-.fade{opacity:0;transform:translateY(24px);animation:up .9s ease-out forwards}
-.d1{animation-delay:.15s}.d2{animation-delay:.35s}.d3{animation-delay:.55s}.d4{animation-delay:.75s}
-@keyframes up{to{opacity:1;transform:none}}
+.hero{position:relative;min-height:440px;display:flex;align-items:center;overflow:hidden}
+.hero .pic{position:absolute;top:0;right:0;bottom:0;width:62%;background-size:cover;background-position:center;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)}
+.hero .txt{position:relative;z-index:2;padding:56px 0;max-width:640px}
+.kicker{font-size:14px;letter-spacing:.32em;text-transform:uppercase;font-weight:500}
+h1,h2{font-weight:300;text-transform:uppercase;letter-spacing:.14em;line-height:1.2}
+h1{font-size:clamp(30px,3.3vw,48px);margin:18px 0 0}
+.hero.big{min-height:560px}
+.hero.big h1{font-size:clamp(34px,3.9vw,58px)}
+.bar{width:48px;height:2px;background:var(--ink);margin:26px 0}
+.lead{font-style:italic;font-weight:300;font-size:clamp(16px,1.3vw,19px);letter-spacing:.03em;color:var(--ink2);max-width:520px}
+.hero .btn{margin-top:36px}
 
-/* CONCEPT */
-.concept .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center}
-.concept .photo{border-radius:28px;overflow:hidden;aspect-ratio:4/5}
-.concept .photo img{width:100%;height:100%;object-fit:cover}
-.steps{margin-top:40px;display:flex;flex-direction:column;gap:0}
-.step{display:grid;grid-template-columns:54px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
-.step:last-child{border-bottom:1px solid var(--line)}
-.step .n{font-family:var(--serif);font-size:30px;color:var(--glow);line-height:1}
-.step h3{font-family:var(--sans);font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;margin-bottom:4px}
-.step p{color:var(--muted);font-size:16px}
+/* STRIP */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);padding:34px 0;border-bottom:1px solid var(--line)}
+.strip .it{min-width:0;display:flex;align-items:center;gap:22px;padding:0 30px;border-left:1px solid #D4CFC8}
+.strip .it:first-child{border-left:0;padding-left:20px}
+.strip svg{width:54px;height:54px;flex-shrink:0}
+.strip p{font-size:15px;font-weight:400;line-height:1.5}
 
-/* DESTINATIONS */
-.dest{background:var(--bg2)}
-.head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:56px;flex-wrap:wrap}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-.card{background:var(--panel);border-radius:24px;overflow:hidden;border:1px solid var(--line);transition:transform .35s, border-color .35s}
-.card:hover{transform:translateY(-6px);border-color:#4A4352}
-.card .im{aspect-ratio:3/2;overflow:hidden}
-.card .im img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+/* SECTION TITLE */
+.sec{padding:60px 0 80px}
+.stitle{display:flex;align-items:center;justify-content:center;gap:40px;margin-bottom:46px;text-align:center}
+.stitle::before,.stitle::after{content:"";width:130px;height:1px;background:var(--ink2);flex-shrink:0}
+.stitle h2{font-size:clamp(18px,1.6vw,23px);letter-spacing:.32em;font-weight:500}
+
+/* CARDS */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.card{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;display:flex;flex-direction:column;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.03);transition:transform .3s, box-shadow .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.08)}
+.card .im{aspect-ratio:2.15/1;overflow:hidden}
+.card .im img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
 .card:hover .im img{transform:scale(1.05)}
-.card .body{padding:26px 28px 30px}
-.card .tag{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--glow)}
-.card h3{font-size:32px;margin:8px 0 10px}
-.card p{color:var(--muted);font-size:15.5px}
-.card .menu{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:#CFC8BD}
-.card .menu b{font-weight:400;color:var(--cream);letter-spacing:.14em;text-transform:uppercase;font-size:11px;display:block;margin-bottom:6px}
+.card .bd{padding:24px 22px 26px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:1}
+.card h3{font-size:19px;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
+.card p{font-style:italic;font-size:15px;color:var(--ink2);flex:1}
+.card .btn{margin-top:10px;padding:12px 26px}
 
-/* TABLE (cuisine) */
-.table .grid{display:grid;grid-template-columns:1fr 1.15fr;gap:70px;align-items:center}
-.table .photo{border-radius:28px;overflow:hidden;aspect-ratio:3/2}
-.table .photo img{width:100%;height:100%;object-fit:cover}
-.pillars{display:grid;grid-template-columns:1fr 1fr;gap:26px 30px;margin-top:38px}
-.pillar h3{font-family:var(--sans);font-size:14px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;margin-bottom:6px;color:var(--glow2)}
-.pillar p{color:var(--muted);font-size:15.5px}
+/* home destination tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tile{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:2.1/1;cursor:pointer}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.tile:hover img{transform:scale(1.06)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent 55%)}
+.tile span{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:#fff;z-index:2;font-size:20px;font-weight:500;letter-spacing:.24em;text-transform:uppercase}
 
-/* SENSES band */
-.senses{padding:90px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.senses .row{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;text-align:center}
-.sense .ic{font-family:var(--serif);font-size:44px;font-style:italic;color:var(--glow)}
-.sense h3{font-family:var(--sans);font-size:13px;letter-spacing:.24em;text-transform:uppercase;font-weight:400;margin:6px 0 6px}
-.sense p{color:var(--muted);font-size:14.5px}
+/* split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.split .ph{border-radius:28px;overflow:hidden;aspect-ratio:16/10}
+.split .ph img{width:100%;height:100%;object-fit:cover}
+.split h2{font-size:clamp(24px,2.3vw,34px)}
+.checks{list-style:none;margin:26px 0 34px;display:flex;flex-direction:column;gap:14px}
+.checks li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px}
+.checks svg{width:22px;height:22px;flex-shrink:0;margin-top:1px}
 
-/* GALLERY */
-.gallery .mosaic{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:16px}
-.gallery figure{border-radius:20px;overflow:hidden;position:relative;cursor:zoom-in}
-.gallery figure img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
-.gallery figure:hover img{transform:scale(1.05)}
-.gallery figcaption{position:absolute;left:16px;bottom:14px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;background:rgba(10,10,12,.6);padding:6px 12px;border-radius:99px;backdrop-filter:blur(6px)}
-.g1{grid-column:span 2;grid-row:span 2}.g2{grid-column:span 2}.g5{grid-column:span 2}.g6{grid-column:span 2;grid-row:span 2}
-.lightbox{position:fixed;inset:0;background:rgba(5,5,6,.94);z-index:100;display:none;align-items:center;justify-content:center;padding:4vw;cursor:zoom-out}
-.lightbox.on{display:flex}
-.lightbox img{max-height:90vh;border-radius:16px}
+/* quotes */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.q{border:1px solid var(--line);border-radius:24px;padding:32px 30px;background:var(--soft)}
+.q .st{letter-spacing:4px;font-size:14px;margin-bottom:12px}
+.q p{font-style:italic;font-size:17px;line-height:1.55}
+.q .who{margin-top:18px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500}
 
-/* CAPSULES */
-.caps{background:var(--bg2)}
-.capgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-.cap{border:1px solid var(--line);border-radius:24px;padding:38px 32px;background:var(--panel);display:flex;flex-direction:column;gap:12px}
-.cap.feat{border-color:var(--glow);background:linear-gradient(180deg,#221D18,var(--panel))}
-.cap .size{font-family:var(--serif);font-size:62px;line-height:1;color:var(--glow2)}
-.cap .size small{font-size:20px;color:var(--muted);font-family:var(--sans);margin-left:6px}
-.cap h3{font-size:30px}
-.cap p{color:var(--muted);font-size:15.5px}
-.cap ul{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:8px}
-.cap li{font-size:15px;padding-left:22px;position:relative}
-.cap li::before{content:"";position:absolute;left:0;top:11px;width:10px;height:1px;background:var(--glow)}
+/* concept steps */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;position:relative}
+.step{position:relative}
+.step .card .im{aspect-ratio:1.95/1}
+.step .badge{width:58px;height:58px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:-34px auto 0;position:relative;z-index:2}
+.step .badge svg{width:34px;height:34px}
+.step h3{font-size:15px;letter-spacing:.06em;font-weight:600;line-height:1.4}
+.step .card p{font-style:normal;font-size:14px}
+.step .card .bd{padding-top:8px}
+.step:not(:last-child)::after{content:"›";position:absolute;right:-24px;top:47%;font-size:34px;font-weight:300;color:var(--ink)}
 
-/* ENTREPRISES */
-.biz{position:relative;overflow:hidden}
-.biz .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
-.biz .photo{border-radius:28px;overflow:hidden;aspect-ratio:16/10}
-.biz .photo img{width:100%;height:100%;object-fit:cover}
-.biz ul{list-style:none;margin:30px 0 36px;display:flex;flex-direction:column;gap:16px}
-.biz li{display:grid;grid-template-columns:28px 1fr;gap:12px;color:#D9D2C7}
-.biz li span{color:var(--glow);font-family:var(--serif);font-size:22px;line-height:1.2}
+/* carousel */
+.carousel{position:relative}
+.track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 54px)/4);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px 14px}
+.track::-webkit-scrollbar{display:none}
+.track .card{scroll-snap-align:start}
+.track .card .im{aspect-ratio:1.5/1}
+.arrow{position:absolute;top:38%;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-size:22px;z-index:3}
+.arrow.l{left:-22px}.arrow.r{right:-22px}
+.dots{display:flex;justify-content:center;gap:10px;margin-top:14px}
+.dots i{width:9px;height:9px;border-radius:50%;background:#CFCAC3}
+.dots i.on{background:var(--ink)}
 
-/* TESTIMONIALS */
-.quotes .row{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-.quote{padding:34px 30px;border-radius:24px;border:1px solid var(--line)}
-.quote p{font-family:var(--serif);font-size:24px;font-style:italic;line-height:1.35}
-.quote .who{margin-top:20px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-.stars{color:var(--glow);letter-spacing:4px;margin-bottom:14px;font-size:14px}
+/* capsules */
+.capcard{display:flex;flex-direction:column;align-items:center;text-align:left}
+.capcard .im{border-radius:24px;overflow:hidden;aspect-ratio:2.15/1;width:100%}
+.capcard .im img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.capcard:hover .im img{transform:scale(1.04)}
+.capcard .row{display:flex;align-items:center;gap:22px;margin:26px 0 12px;align-self:stretch;padding-left:40px}
+.capcard .row svg{width:46px;height:40px}
+.capcard .row h3{font-size:18px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;border-left:1px solid #BDB7AF;padding-left:22px}
+.capcard p{align-self:stretch;padding:0 40px;font-size:15px;color:var(--ink2);min-height:52px}
+.capcard .meta{align-self:stretch;padding:8px 40px 0;font-size:13px;color:var(--muted);letter-spacing:.04em}
+.capcard .btn{margin-top:22px}
 
 /* FAQ */
-.faq{background:var(--bg2)}
-.faq .grid{display:grid;grid-template-columns:1fr 1.4fr;gap:70px}
-details{border-top:1px solid var(--line);padding:22px 0}
+.faq{max-width:900px;margin:0 auto}
+details{border-top:1px solid var(--line);padding:20px 4px}
 details:last-child{border-bottom:1px solid var(--line)}
-summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font-size:18px;font-weight:400}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;font-weight:500;font-size:16px}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";color:var(--glow);font-size:24px;line-height:1;transition:transform .25s}
+summary::after{content:"+";font-size:22px;font-weight:300;transition:transform .25s}
 details[open] summary::after{transform:rotate(45deg)}
-details p{color:var(--muted);margin-top:12px;font-size:16px;max-width:620px}
+details p{margin-top:10px;color:var(--ink2);font-size:15px;max-width:760px}
+
+/* events extra */
+.band{background:var(--soft);border-radius:28px;padding:56px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.band h2{font-size:clamp(22px,2vw,30px)}
 
 /* RESERVATION */
-.resa .box{display:grid;grid-template-columns:1fr 1.1fr;border-radius:32px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
-.resa .side{background:url(img/couple-japon.jpg) center/cover;min-height:560px;position:relative}
-.resa .side::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,12,.7),transparent 55%)}
-.resa .side p{position:absolute;left:34px;bottom:30px;right:34px;z-index:2;font-family:var(--serif);font-size:30px;font-style:italic;line-height:1.2}
-form{padding:52px 48px;display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;align-content:start}
-form h2{grid-column:1/-1;font-size:42px;margin-bottom:6px}
-form .full{grid-column:1/-1}
-label{display:flex;flex-direction:column;gap:7px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-input,select,textarea{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--cream);font-family:var(--sans);font-size:15.5px;font-weight:300;letter-spacing:0;text-transform:none;outline:none;transition:border-color .2s}
-input:focus,select:focus,textarea:focus{border-color:var(--glow)}
-textarea{min-height:84px;resize:vertical}
-form .btn{justify-self:start;margin-top:8px}
-.ok{grid-column:1/-1;display:none;padding:16px 18px;border-radius:12px;background:#1F1A14;border:1px solid var(--glow);color:var(--glow2);font-size:15.5px}
-.ok.on{display:block}
+.resa>*{min-width:0}
+.resa{display:grid;grid-template-columns:.95fr 1.25fr;gap:40px;padding:40px 0 80px;align-items:start}
+.resa .left h1{font-size:clamp(30px,2.8vw,42px)}
+.resa .left .ph{border-radius:28px;overflow:hidden;margin-top:44px;aspect-ratio:1.56/1}
+.resa .left .ph img{width:100%;height:100%;object-fit:cover}
+.mini{display:grid;grid-template-columns:repeat(4,1fr);margin-top:30px}
+.mini div{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;font-size:14px;line-height:1.4;border-left:1px solid #D4CFC8;padding:0 8px}
+.mini div:first-child{border-left:0}
+.mini svg{width:44px;height:40px}
+.panel{border:1px solid var(--line);border-radius:28px;padding:36px 34px;box-shadow:0 2px 14px rgba(0,0,0,.04)}
+.prog{display:flex;justify-content:space-between;position:relative;margin:0 30px 38px}
+.prog::before{content:"";position:absolute;left:8%;right:8%;top:20px;height:2px;background:var(--line)}
+.prog .s{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;width:33%}
+.prog .n{width:42px;height:42px;border-radius:50%;background:#DCD8D2;color:#555;display:flex;align-items:center;justify-content:center;font-weight:500}
+.prog .s.on .n{background:var(--ink);color:#fff}
+.prog .s.done .n{background:#5A5650;color:#fff}
+.prog .s span{font-size:15px;color:var(--muted)}
+.prog .s.on span{color:var(--ink);font-weight:600}
+.fs h4{font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin:0 0 16px}
+.fs{padding:22px 0;border-top:1px solid var(--line)}
+.fs:first-of-type{border-top:0;padding-top:0}
+.dpick{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dopt{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;position:relative;padding:0;transition:border-color .2s}
+.dopt img{width:100%;aspect-ratio:1.8/1;object-fit:cover}
+.dopt span{display:block;padding:12px 4px;font-size:13.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.dopt.sel{border:2px solid var(--ink)}
+.dopt.sel::after,.copt.sel::after{content:"✓";position:absolute;top:-1px;right:-1px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px 24px}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld label{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.fld input,.fld select,.fld textarea{border:1px solid #D9D4CD;border-radius:999px;padding:14px 20px;font-family:var(--f);font-size:15px;background:#fff;color:var(--ink);outline:none;transition:border-color .2s;width:100%}
+.fld textarea{border-radius:18px;min-height:90px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--ink)}
+.caprow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end}
+.copt{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;position:relative;transition:border-color .2s}
+.copt svg{width:40px;height:30px}
+.copt b{font-weight:600}
+.copt.sel{border:2px solid var(--ink)}
+.stepper{display:flex;align-items:center;gap:18px;border:1px solid var(--line);border-radius:999px;padding:8px}
+.stepper button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:22px;line-height:1}
+.stepper output{min-width:24px;text-align:center;font-size:18px}
+.cvlabel{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:block}
+.actions{display:flex;justify-content:center;gap:14px;margin-top:30px}
+.actions .btn{min-width:min(100%,520px);padding:17px 30px}
+.actions .btn.ghost{min-width:auto}
+.err{color:#A3361B;font-size:14px;text-align:center;margin-top:12px;min-height:20px}
+.recap{background:var(--soft);border-radius:20px;padding:26px 28px;display:grid;grid-template-columns:1fr 1fr;gap:14px 30px}
+.recap div span{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.recap div b{font-weight:500}
+.done-msg{text-align:center;padding:20px 10px 4px}
+.done-msg h3{font-size:22px;font-weight:300;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px;font-style:italic}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(17,17,17,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.mbox{background:#fff;border-radius:28px;max-width:760px;width:100%;max-height:90vh;overflow:auto;position:relative;animation:pg .35s ease}
+.mbox img{width:100%;aspect-ratio:2.3/1;object-fit:cover}
+.mbox .in{padding:32px 40px 38px}
+.mbox h3{font-size:24px;font-weight:300;letter-spacing:.2em;text-transform:uppercase}
+.mbox .lead{margin:10px 0 18px;max-width:none}
+.mbox ol{list-style:none;counter-reset:c;display:flex;flex-direction:column;gap:12px;margin:18px 0 26px}
+.mbox ol li{counter-increment:c;display:grid;grid-template-columns:120px 1fr;gap:16px;border-top:1px solid var(--line);padding-top:12px}
+.mbox ol li::before{content:attr(data-k);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-top:3px}
+.close{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;font-size:22px;box-shadow:0 2px 10px rgba(0,0,0,.15);z-index:2}
 
 /* FOOTER */
-footer{padding:80px 0 40px;border-top:1px solid var(--line)}
-footer .top{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
-footer .logo{width:280px;mix-blend-mode:screen;margin:-30px 0 0 -40px}
-footer h4{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--glow);font-weight:400;margin-bottom:14px}
-footer p,footer a{color:var(--muted);font-size:15px;display:block;margin-bottom:6px}
-footer a:hover{color:var(--cream)}
-footer .bottom{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:#7D776F}
+footer{border-top:1px solid var(--line);padding:56px 0 30px;background:var(--soft)}
+footer .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+footer .lg{display:flex;align-items:center;gap:14px}
+footer .lg .ic{height:44px}
+footer .lg .wm{height:17px}
+footer .tag{margin-top:16px;font-style:italic;color:var(--ink2);font-size:15px}
+footer h4{font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+footer a,footer p{display:block;font-size:14.5px;color:var(--ink2);margin-bottom:7px}
+footer a:hover{text-decoration:underline}
+footer .bot{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .9s ease, transform .9s ease}
-.reveal.in{opacity:1;transform:none}
-
-@media (max-width:980px){
-  section{padding:84px 0}
-  .links{display:none;position:absolute;top:78px;left:0;right:0;flex-direction:column;background:rgba(10,10,12,.97);padding:26px 0 32px;gap:22px;border-bottom:1px solid var(--line)}
-  .links.open{display:flex}
-  .burger{display:block}
-  .concept .grid,.table .grid,.biz .grid,.faq .grid,.resa .box{grid-template-columns:1fr;gap:44px}
-  .cards,.capgrid,.quotes .row{grid-template-columns:1fr}
-  .senses .row{grid-template-columns:repeat(2,1fr);gap:34px}
-  .gallery .mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
-  .g1,.g6{grid-column:span 2;grid-row:span 1}
-  footer .top{grid-template-columns:1fr 1fr}
-  form{grid-template-columns:1fr;padding:38px 26px}
-  .resa .side{min-height:320px}
-  .pillars{grid-template-columns:1fr}
+@media (max-width:1100px){
+  .menu{gap:18px}.menu a{font-size:12.5px}
+  .steps{grid-template-columns:repeat(3,1fr)}
+  .step:nth-child(3)::after{display:none}
 }
-@media (prefers-reduced-motion:reduce){.hero .bg,.fade{animation:none;opacity:1;transform:none}.reveal{opacity:1;transform:none;transition:none}}
+@media (max-width:900px){
+  .burger{display:block}
+  .brand{border-right:0;padding-right:0}
+  .nav .btn.top{display:none}
+  .menu{display:none;position:absolute;top:84px;left:0;right:0;flex-direction:column;background:#fff;margin:0;padding:18px 4vw 26px;gap:6px;border-bottom:1px solid var(--line)}
+  .menu.open{display:flex}
+  .menu a{font-size:15px}
+  .hero,.hero.big{min-height:0;flex-direction:column;align-items:stretch}
+  .hero .pic{position:relative;width:100%;height:260px;-webkit-mask-image:none;mask-image:none;order:2;border-radius:0}
+  .hero .txt{padding:34px 0}
+  .strip{grid-template-columns:1fr 1fr;gap:24px 0}
+  .strip .it{padding:0 14px}
+  .strip .it:nth-child(3){border-left:0;padding-left:20px}
+  .strip svg{width:36px;height:36px}
+  .strip .it{gap:10px;padding:0 8px!important}
+  .strip p{overflow-wrap:anywhere;hyphens:auto}
+  .strip p{font-size:13.5px}
+  .strip p br{display:none}
+  .grid4,.tiles{grid-template-columns:1fr 1fr}
+  .grid3,.quotes,.split,.band,.resa{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .step::after{display:none}
+  .track{grid-auto-columns:78%}
+  .arrow{display:none}
+  .stitle::before,.stitle::after{width:40px}
+  .stitle{gap:16px}
+  .band{padding:36px 26px}
+  .dpick{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+  .caprow{grid-template-columns:1fr 1fr 1fr}
+  .caprow .cv{grid-column:1/-1!important;grid-row:3!important;margin-top:8px}
+  .stepper{width:max-content}
+  .panel{padding:26px 18px}
+  .prog{margin:0 0 30px}
+  .recap{grid-template-columns:1fr}
+  footer .top{grid-template-columns:1fr 1fr}
+  footer .top>div:first-child{grid-column:1/-1}
+}
+@media (max-width:520px){
+  .grid4,.tiles,.steps{grid-template-columns:1fr}
+  .mini{grid-template-columns:1fr 1fr;gap:20px 0}
+  .mini div:nth-child(3){border-left:0}
+  .mbox .in{padding:26px 22px}
+  .mbox ol li{grid-template-columns:1fr;gap:2px}
+}
 </style>
 </head>
 <body>
 
-<nav id="nav">
+<header class="nav" id="nav">
   <div class="wrap">
-    <a href="#top" class="brand"><img src="img/icone.png" alt="Logo ESCALE"><span>ESCALE</span></a>
-    <button class="burger" id="burger" aria-label="Menu">☰</button>
-    <div class="links" id="links">
-      <a href="#concept">Le concept</a>
-      <a href="#destinations">Destinations</a>
-      <a href="#capsules">Capsules</a>
-      <a href="#entreprises">Entreprises</a>
-      <a href="#faq">Questions</a>
-      <a href="#reserver" class="btn">Réserver</a>
-    </div>
-  </div>
-</nav>
-
-<header class="hero" id="top">
-  <div class="bg" role="img" aria-label="La salle d'ESCALE et ses capsules lumineuses"></div>
-  <div class="wrap">
-    <p class="eyebrow fade d1">Restaurant immersif · Paris</p>
-    <h1 class="fade d2">Le monde à portée <em>de table.</em></h1>
-    <p class="base fade d3">Le premier restaurant-capsule où chaque repas est un voyage à cinq sens.</p>
-    <div class="ctas fade d4">
-      <a href="#reserver" class="btn solid">Réserver une capsule</a>
-      <a href="#destinations" class="btn">Découvrir les destinations</a>
-    </div>
+    <a href="#accueil" class="brand" aria-label="ESCALE, accueil"><img class="ic" src="img/icone-noir.png" alt=""><img class="wm" src="img/wordmark.png" alt="ESCALE"></a>
+    <nav class="menu" id="menu">
+      <a href="#concept" data-p="concept">Concept</a>
+      <a href="#destinations" data-p="destinations">Destinations</a>
+      <a href="#capsules" data-p="capsules">Nos capsules</a>
+      <a href="#gastronomie" data-p="gastronomie">Gastronomie</a>
+      <a href="#evenements" data-p="evenements">Événements</a>
+    </nav>
+    <a href="#reserver" class="btn top">Réserver</a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu">☰</button>
   </div>
 </header>
 
-<section class="concept" id="concept">
-  <div class="wrap grid">
-    <div class="photo reveal"><img src="img/couple-polynesie.jpg" alt="Couple dînant dans une capsule ESCALE face au lagon de Bora-Bora, avec des lunettes de réalité mixte légères" loading="lazy"></div>
-    <div class="reveal">
-      <p class="eyebrow">Le concept</p>
-      <h2>Partir à l'autre bout du monde, <em>le temps d'un dîner.</em></h2>
-      <p class="lead" style="margin-top:18px">Pas d'avion, pas de valise, pas de congés à poser. Vous vous installez dans votre capsule privée et le voyage commence.</p>
-      <div class="steps">
-        <div class="step"><span class="n">01</span><div><h3>Choisissez votre destination</h3><p>Kyoto sous les cerisiers, un lagon polynésien, un récif corallien…</p></div></div>
-        <div class="step"><span class="n">02</span><div><h3>Installez-vous dans votre capsule</h3><p>Un espace privé, à deux, à cinq ou jusqu'à dix.</p></div></div>
-        <div class="step"><span class="n">03</span><div><h3>Ouvrez les yeux</h3><p>Des lunettes de réalité mixte légères et transparentes : le décor change, mais vous voyez toujours votre assiette et la personne en face.</p></div></div>
-        <div class="step"><span class="n">04</span><div><h3>Ressentez</h3><p>Sons, parfums, chaleur ou fraîcheur : la destination prend vie autour de vous.</p></div></div>
-        <div class="step"><span class="n">05</span><div><h3>Dégustez</h3><p>Un menu semi-gastronomique imaginé pour la destination choisie.</p></div></div>
+<main>
+
+<!-- ACCUEIL -->
+<section class="page" id="p-accueil">
+  <div class="hero big">
+    <div class="pic" style="background-image:url(img/capsule-japon.jpg)" role="img" aria-label="Capsule C9 ouverte sur le Japon"></div>
+    <div class="wrap"><div class="txt">
+      <p class="kicker">Escale</p>
+      <h1>Le monde à<br>portée de table.</h1>
+      <div class="bar"></div>
+      <p class="lead">Le premier restaurant-capsule où chaque repas est un voyage à cinq sens.</p>
+      <a href="#reserver" class="btn">Réserver une expérience <span class="arr">→</span></a>
+    </div></div>
+  </div>
+  <div class="wrap strip">
+    <div class="it"><svg data-i="headset"></svg><p>Immersion à 360°<br>en réalité mixte</p></div>
+    <div class="it"><svg data-i="sliders"></svg><p>Expérience<br>multisensorielle</p></div>
+    <div class="it"><svg data-i="cloche"></svg><p>Menu<br>semi-gastronomique</p></div>
+    <div class="it"><svg data-i="people"></svg><p>En couple, entre amis<br>ou en groupe</p></div>
+  </div>
+  <div class="wrap sec">
+    <div class="stitle"><h2>Explorez nos destinations</h2></div>
+    <div class="tiles" id="homeTiles"></div>
+  </div>
+  <div class="wrap sec" style="padding-top:20px">
+    <div class="split">
+      <div class="ph"><img src="img/couple-japon.jpg" alt="Couple souriant dînant sous les cerisiers du Japon" loading="lazy"></div>
+      <div>
+        <p class="kicker">Notre promesse</p>
+        <h2 style="margin-top:14px">Un vrai repas,<br>pas un gadget.</h2>
+        <div class="bar"></div>
+        <ul class="checks">
+          <li><svg data-i="check"></svg>Une cuisine semi-gastronomique aussi soignée que nos décors.</li>
+          <li><svg data-i="check"></svg>Des lunettes légères et transparentes : vous voyez votre assiette et vos proches.</li>
+          <li><svg data-i="check"></svg>Des pauses sans écran entre les plats, pour un confort total.</li>
+          <li><svg data-i="check"></svg>Allergies et régimes pris en compte dès la réservation.</li>
+        </ul>
+        <a href="#concept" class="btn ghost">Découvrir le concept <span class="arr">→</span></a>
       </div>
     </div>
   </div>
-</section>
-
-<section class="dest" id="destinations">
-  <div class="wrap">
-    <div class="head reveal">
-      <div><p class="eyebrow">Destinations</p><h2>Où dînez-vous <em>ce soir ?</em></h2></div>
-      <p class="lead">Chaque destination a son décor, son ambiance sonore, ses parfums et son menu. De nouvelles escales arrivent chaque saison.</p>
-    </div>
-    <div class="cards">
-      <article class="card reveal">
-        <div class="im"><img src="img/capsule-japon.jpg" alt="Capsule ESCALE avec vue sur le mont Fuji, une pagode et des cerisiers en fleurs" loading="lazy"></div>
-        <div class="body">
-          <span class="tag">Japon</span>
-          <h3>Kyoto en fleurs</h3>
-          <p>Une pagode au bord de l'eau, le mont Fuji au loin et des pétales de cerisier qui tombent autour de la table.</p>
-          <div class="menu"><b>Le menu</b>Bouillon dashi · Sashimi et agrumes · Mochi au thé matcha</div>
-        </div>
-      </article>
-      <article class="card reveal">
-        <div class="im"><img src="img/capsule-polynesie.jpg" alt="Capsule ESCALE face à un lagon turquoise et des bungalows sur pilotis au coucher du soleil" loading="lazy"></div>
-        <div class="body">
-          <span class="tag">Polynésie</span>
-          <h3>Lagon au crépuscule</h3>
-          <p>Le lagon turquoise, les bungalows sur pilotis et la brise tiède du Pacifique au coucher du soleil.</p>
-          <div class="menu"><b>Le menu</b>Poisson cru au lait de coco · Mahi-mahi grillé · Ananas rôti à la vanille</div>
-        </div>
-      </article>
-      <article class="card reveal">
-        <div class="im"><img src="img/capsule-recif.jpg" alt="Capsule ESCALE entourée d'un monde sous-marin avec coraux, méduses et poissons" loading="lazy"></div>
-        <div class="body">
-          <span class="tag">Fonds marins</span>
-          <h3>Le récif</h3>
-          <p>Coraux lumineux, méduses et bancs de poissons : un dîner au fond de l'océan, sans se mouiller.</p>
-          <div class="menu"><b>Le menu</b>Saint-Jacques snackées · Homard et écume iodée · Perles d'agrumes</div>
-        </div>
-      </article>
+  <div class="wrap sec" style="padding-top:10px">
+    <div class="stitle"><h2>Retour de voyage</h2></div>
+    <div class="quotes">
+      <div class="q"><div class="st">★★★★★</div><p>« On est partis à Kyoto pour notre anniversaire. Et surtout, on a vraiment bien mangé. »</p><div class="who">Inès, 29 ans · Capsule 2 personnes</div></div>
+      <div class="q"><div class="st">★★★★★</div><p>« Pour une fois, toute l'équipe était à la même table. On en parle encore à la machine à café. »</p><div class="who">Matthieu, responsable RH · Capsule 10 personnes</div></div>
+      <div class="q"><div class="st">★★★★☆</div><p>« J'avais peur d'avoir mal à la tête avec le casque. Il est si léger qu'on l'oublie. »</p><div class="who">Karine, 47 ans · Capsule 5 personnes</div></div>
     </div>
   </div>
 </section>
 
-<section class="table" id="table">
-  <div class="wrap grid">
-    <div class="reveal">
-      <p class="eyebrow">La table</p>
-      <h2>Un vrai repas, <em>pas un gadget.</em></h2>
-      <p class="lead" style="margin-top:18px">La technologie sert le repas, pas l'inverse. Notre cuisine est aussi soignée que nos décors.</p>
-      <div class="pillars">
-        <div class="pillar"><h3>Cuisine de saison</h3><p>Des produits frais, travaillés par notre équipe en cuisine ouverte.</p></div>
-        <div class="pillar"><h3>Un menu par voyage</h3><p>Chaque plat est conçu pour sa destination et ses accords sensoriels.</p></div>
-        <div class="pillar"><h3>Confort d'abord</h3><p>Lunettes légères, compatibles avec vos lunettes de vue, et pauses sans écran entre les plats.</p></div>
-        <div class="pillar"><h3>À votre goût</h3><p>Allergies et régimes alimentaires pris en compte dès la réservation.</p></div>
-      </div>
-    </div>
-    <div class="photo reveal"><img src="img/plat-sous-marin.jpg" alt="Assiette de Saint-Jacques et homard dressée devant un décor sous-marin" loading="lazy"></div>
+<!-- CONCEPT -->
+<section class="page" id="p-concept">
+  <div class="hero">
+    <div class="pic" style="background-image:url(img/couple-japon.jpg);background-position:center 30%" role="img" aria-label="Couple en réalité mixte devant le mont Fuji"></div>
+    <div class="wrap"><div class="txt">
+      <p class="kicker">Notre concept</p>
+      <h1>Un voyage<br>culinaire immersif</h1>
+      <div class="bar"></div>
+      <p class="lead">Le premier restaurant-capsule qui réunit cuisine semi-gastronomique, réalité mixte et immersion multisensorielle.</p>
+    </div></div>
   </div>
-</section>
-
-<div class="senses">
-  <div class="wrap row">
-    <div class="sense reveal"><div class="ic">i</div><h3>La vue</h3><p>Des décors en réalité mixte, sans perdre de vue votre table.</p></div>
-    <div class="sense reveal"><div class="ic">ii</div><h3>L'ouïe</h3><p>Un son spatialisé : vagues, vent, ville lointaine.</p></div>
-    <div class="sense reveal"><div class="ic">iii</div><h3>L'odorat</h3><p>Des parfums d'ambiance assortis à chaque destination.</p></div>
-    <div class="sense reveal"><div class="ic">iv</div><h3>Le toucher</h3><p>Chaleur, fraîcheur et légères vibrations.</p></div>
-    <div class="sense reveal"><div class="ic">v</div><h3>Le goût</h3><p>Un menu qui raconte le voyage, plat après plat.</p></div>
-  </div>
-</div>
-
-<section class="gallery" id="galerie">
-  <div class="wrap">
-    <div class="head reveal">
-      <div><p class="eyebrow">Galerie</p><h2>Ils ont fait <em>escale.</em></h2></div>
-      <p class="lead">Un aperçu des soirées vécues dans nos capsules.</p>
-    </div>
-    <div class="mosaic">
-      <figure class="g1 reveal"><img src="img/couple-sous-marin.jpg" alt="Couple souriant avec des casques de réalité mixte, dînant devant un décor sous-marin avec une raie manta" loading="lazy"><figcaption>Fonds marins</figcaption></figure>
-      <figure class="g2 reveal"><img src="img/couple-polynesie-casques.jpg" alt="Couple dînant dans une capsule face au lagon polynésien" loading="lazy"><figcaption>Polynésie</figcaption></figure>
-      <figure class="g3 reveal"><img src="img/couple-recif.jpg" alt="Couple dînant dans une capsule entourée de tortues et de méduses" loading="lazy"><figcaption>Le récif</figcaption></figure>
-      <figure class="g4 reveal"><img src="img/couple-japon.jpg" alt="Couple dînant sous les cerisiers du Japon avec des casques de réalité mixte" loading="lazy"><figcaption>Japon</figcaption></figure>
-      <figure class="g5 reveal"><img src="img/salle-capsules.jpg" alt="La salle d'ESCALE avec ses capsules de 2 à 10 personnes" loading="lazy"><figcaption>La salle</figcaption></figure>
-      <figure class="g6 reveal" style="grid-column:span 2;grid-row:span 1"><img src="img/salle.jpg" alt="L'accueil d'ESCALE et la capsule C9 ouverte sur le Japon" loading="lazy"><figcaption>L'accueil</figcaption></figure>
+  <div class="wrap sec">
+    <div class="stitle"><h2>Comment ça fonctionne ?</h2></div>
+    <div class="steps">
+      <div class="step"><div class="card"><div class="im"><img src="img/etape-1.jpg" alt="Choix de la destination sur une tablette ESCALE" loading="lazy"></div><div class="badge"><svg data-i="compass"></svg></div><div class="bd"><h3>1. Choisissez<br>votre destination</h3><p>Japon, Italie, Polynésie, fonds marins…</p></div></div></div>
+      <div class="step"><div class="card"><div class="im"><img src="img/etape-2.jpg" alt="Capsule C9 pour deux personnes" loading="lazy"></div><div class="badge"><svg data-i="cloche"></svg></div><div class="bd"><h3>2. Installez-vous<br>dans votre capsule</h3><p>Un espace privé et confortable, en couple ou en groupe.</p></div></div></div>
+      <div class="step"><div class="card"><div class="im"><img src="img/etape-3.jpg" alt="Casque de réalité mixte ESCALE" loading="lazy"></div><div class="badge"><svg data-i="headset"></svg></div><div class="bd"><h3>3. Plongez dans<br>l'immersion</h3><p>Un casque de réalité mixte qui vous transporte, sans vous couper de votre table.</p></div></div></div>
+      <div class="step"><div class="card"><div class="im"><img src="img/etape-4.jpg" alt="Fleurs de cerisier et parfum d'ambiance" loading="lazy"></div><div class="badge"><svg data-i="lotus"></svg></div><div class="bd"><h3>4. Vivez une expérience<br>multisensorielle</h3><p>Sons spatialisés, parfums d'ambiance et effets de température.</p></div></div></div>
+      <div class="step"><div class="card"><div class="im"><img src="img/etape-5.jpg" alt="Saint-Jacques dressée" loading="lazy"></div><div class="badge"><svg data-i="fork"></svg></div><div class="bd"><h3>5. Savourez<br>votre voyage</h3><p>Un menu semi-gastronomique inspiré de la destination choisie.</p></div></div></div>
     </div>
   </div>
-</section>
-
-<section class="caps" id="capsules">
-  <div class="wrap">
-    <div class="head reveal">
-      <div><p class="eyebrow">Nos capsules</p><h2>À deux, en bande <em>ou en équipe.</em></h2></div>
-      <p class="lead">Dix capsules privées pour 2 à 10 personnes. Chaque capsule s'adapte à votre destination.</p>
-    </div>
-    <div class="capgrid">
-      <div class="cap reveal"><div class="size">2<small>pers.</small></div><h3>Duo</h3><p>Pour un anniversaire, un rendez-vous ou une demande en mariage.</p><ul><li>6 capsules intimes</li><li>Ambiance romantique</li><li>Souvenir photo de votre voyage</li></ul></div>
-      <div class="cap feat reveal"><div class="size">5<small>pers.</small></div><h3>Groupe</h3><p>Pour une soirée entre amis ou en famille.</p><ul><li>3 capsules spacieuses</li><li>Une destination choisie ensemble</li><li>Parfait pour les anniversaires</li></ul></div>
-      <div class="cap reveal"><div class="size">10<small>pers.</small></div><h3>Événement</h3><p>Pour les grandes tablées et les équipes.</p><ul><li>1 grande capsule</li><li>Tout le monde à la même table</li><li>Formule sur mesure</li></ul></div>
-    </div>
+  <div class="wrap strip" style="border-top:1px solid var(--line)">
+    <div class="it"><svg data-i="headset"></svg><p>Réalité mixte<br>immersive</p></div>
+    <div class="it"><svg data-i="sliders"></svg><p>Ambiance multisensorielle<br>(sons, parfums, température)</p></div>
+    <div class="it"><svg data-i="chair"></svg><p>Confort et intimité<br>haut de gamme</p></div>
+    <div class="it"><svg data-i="cloche"></svg><p>Un service personnalisé<br>tout au long du voyage</p></div>
   </div>
-</section>
-
-<section class="biz" id="entreprises">
-  <div class="wrap grid">
-    <div class="photo reveal"><img src="img/salle-capsules.jpg" alt="Grande capsule de 10 personnes dans la salle d'ESCALE" loading="lazy"></div>
-    <div class="reveal">
-      <p class="eyebrow">Entreprises</p>
-      <h2>Le team building <em>qui rassemble.</em></h2>
-      <p class="lead" style="margin-top:18px">Offrez à vos équipes un vrai moment ensemble, loin de l'éternel bowling-restaurant.</p>
-      <ul>
-        <li><span>—</span>Une capsule de 10 personnes : toute l'équipe autour de la même table.</li>
-        <li><span>—</span>Un apéritif collectif avant le voyage, pour que tout le monde se retrouve.</li>
-        <li><span>—</span>Un formulaire régimes et allergies envoyé à chaque participant à la réservation.</li>
-        <li><span>—</span>Une immersion douce, accessible à tous, avec ou sans casque.</li>
-        <li><span>—</span>Un interlocuteur unique, une formule clé en main.</li>
-      </ul>
-      <a href="#reserver" class="btn solid" data-type="entreprise">Demander un devis</a>
-    </div>
-  </div>
-</section>
-
-<section class="quotes">
-  <div class="wrap">
-    <div class="head reveal"><div><p class="eyebrow">Avis</p><h2>Retour <em>de voyage.</em></h2></div></div>
-    <div class="row">
-      <div class="quote reveal"><div class="stars">★★★★★</div><p>« On est partis à Kyoto pour notre anniversaire. Et surtout, on a vraiment bien mangé. »</p><div class="who">Inès, 29 ans · Capsule Duo</div></div>
-      <div class="quote reveal"><div class="stars">★★★★★</div><p>« Pour une fois, toute l'équipe était à la même table. On en parle encore à la machine à café. »</p><div class="who">Matthieu, responsable RH · Capsule Événement</div></div>
-      <div class="quote reveal"><div class="stars">★★★★☆</div><p>« J'avais peur d'avoir mal à la tête avec le casque. Il est tellement léger qu'on l'oublie. »</p><div class="who">Karine, 47 ans · Capsule Groupe</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="faq" id="faq">
-  <div class="wrap grid">
-    <div class="reveal"><p class="eyebrow">Questions</p><h2>Avant de <em>partir.</em></h2><p class="lead" style="margin-top:18px">Tout ce qu'il faut savoir avant votre première escale.</p></div>
-    <div class="reveal">
-      <details open><summary>Le casque est-il confortable pendant tout le repas ?</summary><p>Nos lunettes de réalité mixte sont légères et transparentes. Vous voyez votre assiette et vos proches, et des pauses sans écran sont prévues entre les plats.</p></details>
-      <details><summary>Et si j'ai facilement mal au cœur ?</summary><p>Nos décors sont stables et conçus pour être vécus assis : pas de mouvements brusques. Vous pouvez retirer les lunettes à tout moment, et notre équipe peut adoucir l'immersion.</p></details>
-      <details><summary>Je porte des lunettes de vue, est-ce un problème ?</summary><p>Non, nos lunettes s'adaptent par-dessus la plupart des montures. Précisez-le à la réservation, nous préparerons le bon modèle.</p></details>
-      <details><summary>Les allergies et régimes sont-ils pris en compte ?</summary><p>Oui. Indiquez-les lors de la réservation (végétarien, sans gluten, halal, allergies…) : le chef adapte le menu de votre destination.</p></details>
-      <details><summary>Le restaurant est-il accessible ?</summary><p>ESCALE est accessible aux personnes à mobilité réduite, et nos capsules permettent d'accueillir un fauteuil roulant.</p></details>
+  <div class="wrap sec">
+    <div class="stitle"><h2>Vos questions</h2></div>
+    <div class="faq">
+      <details open><summary>Le casque est-il confortable pendant tout le repas ?</summary><p>Nos lunettes de réalité mixte sont légères et transparentes : vous voyez votre assiette et vos proches. Des pauses sans écran sont prévues entre les plats.</p></details>
+      <details><summary>Et si j'ai facilement mal au cœur ?</summary><p>Nos décors sont stables et pensés pour être vécus assis, sans mouvements brusques. Vous pouvez retirer les lunettes à tout moment.</p></details>
+      <details><summary>Je porte des lunettes de vue, est-ce un problème ?</summary><p>Non, nos lunettes s'adaptent par-dessus la plupart des montures. Indiquez-le à la réservation.</p></details>
+      <details><summary>Le restaurant est-il accessible ?</summary><p>ESCALE est accessible aux personnes à mobilité réduite, et nos capsules accueillent un fauteuil roulant.</p></details>
       <details><summary>Combien de temps dure l'expérience ?</summary><p>Comptez environ deux heures, de l'accueil au dessert.</p></details>
     </div>
   </div>
 </section>
 
-<section class="resa" id="reserver">
-  <div class="wrap">
-    <div class="box reveal">
-      <div class="side" role="img" aria-label="Couple dînant sous les cerisiers du Japon"><p>« Où partons-nous ce soir ? »</p></div>
-      <form id="form" novalidate>
-        <h2>Réserver <em>votre escale</em></h2>
-        <label>Nom<input type="text" name="nom" required placeholder="Votre nom"></label>
-        <label>E-mail<input type="email" name="email" required placeholder="vous@exemple.fr"></label>
-        <label>Destination<select name="dest"><option>Japon – Kyoto en fleurs</option><option>Polynésie – Lagon au crépuscule</option><option>Fonds marins – Le récif</option><option>Surprenez-moi</option></select></label>
-        <label>Type de réservation<select name="type" id="type"><option value="duo">Capsule Duo (2 pers.)</option><option value="groupe">Capsule Groupe (5 pers.)</option><option value="entreprise">Événement / Entreprise (10 pers.)</option></select></label>
-        <label>Date<input type="date" name="date" required></label>
-        <label>Service<select name="service"><option>Premier service – 19 h</option><option>Second service – 21 h 30</option></select></label>
-        <label class="full">Allergies, régimes, occasion particulière<textarea name="notes" placeholder="Ex. : un végétarien, anniversaire de couple, porte des lunettes…"></textarea></label>
-        <button class="btn solid" type="submit">Envoyer ma demande</button>
-        <div class="ok" id="ok"></div>
-      </form>
+<!-- DESTINATIONS -->
+<section class="page" id="p-destinations">
+  <div class="hero">
+    <div class="pic" style="background-image:url(img/hero-destinations.jpg)" role="img" aria-label="La Terre vue depuis l'espace, illuminée la nuit"></div>
+    <div class="wrap"><div class="txt">
+      <p class="kicker">Nos destinations</p>
+      <h1>Faites le tour<br>du monde… à table</h1>
+      <div class="bar"></div>
+      <p class="lead">Choisissez votre destination et vivez un voyage gastronomique immersif, sans quitter Paris.</p>
+    </div></div>
+  </div>
+  <div class="wrap strip">
+    <div class="it"><svg data-i="globe"></svg><p>Des destinations<br>emblématiques</p></div>
+    <div class="it"><svg data-i="cloche"></svg><p>Un menu inspiré<br>de chaque culture</p></div>
+    <div class="it"><svg data-i="headset"></svg><p>Une immersion à 360°<br>en réalité mixte</p></div>
+    <div class="it"><svg data-i="lotus"></svg><p>Une expérience<br>multisensorielle unique</p></div>
+  </div>
+  <div class="wrap sec">
+    <div class="carousel">
+      <button class="arrow l" id="prev" aria-label="Précédent">‹</button>
+      <div class="track" id="track"></div>
+      <button class="arrow r" id="next" aria-label="Suivant">›</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- CAPSULES -->
+<section class="page" id="p-capsules">
+  <div class="hero">
+    <div class="pic" style="background-image:url(img/hero-capsules.jpg)" role="img" aria-label="Capsule C9 ouverte sur le Japon"></div>
+    <div class="wrap"><div class="txt">
+      <p class="kicker">Nos capsules</p>
+      <h1>Des espaces immersifs<br>pour tous vos voyages</h1>
+      <div class="bar"></div>
+      <p class="lead">Des capsules privées et confortables, pensées pour vivre une expérience gastronomique immersive, en couple, en petit groupe ou avec votre équipe.</p>
+    </div></div>
+  </div>
+  <div class="wrap sec">
+    <div class="grid3">
+      <div class="capcard"><div class="im"><img src="img/capsule-2.jpg" alt="Capsule 2 personnes au Japon" loading="lazy"></div><div class="row"><svg data-i="duo"></svg><h3>Capsule 2 personnes</h3></div><p>L'expérience idéale pour un dîner romantique et dépaysant.</p><div class="meta">6 capsules · anniversaire, rendez-vous, demande en mariage</div><a href="#reserver" class="btn" data-cap="duo">Réserver <span class="arr">→</span></a></div>
+      <div class="capcard"><div class="im"><img src="img/capsule-5.jpg" alt="Capsule 5 personnes en Polynésie" loading="lazy"></div><div class="row"><svg data-i="people"></svg><h3>Capsule 5 personnes</h3></div><p>Parfaite pour un dîner entre amis ou en famille, dans un univers immersif à 360°.</p><div class="meta">3 capsules · de 3 à 5 convives</div><a href="#reserver" class="btn" data-cap="groupe">Réserver <span class="arr">→</span></a></div>
+      <div class="capcard"><div class="im"><img src="img/capsule-10.jpg" alt="Capsule 10 personnes dans les fonds marins" loading="lazy"></div><div class="row"><svg data-i="crowd"></svg><h3>Capsule 10 personnes</h3></div><p>La solution idéale pour vos événements professionnels, anniversaires ou moments d'exception.</p><div class="meta">1 grande capsule · de 6 à 10 convives, tous à la même table</div><a href="#reserver" class="btn" data-cap="evenement">Réserver <span class="arr">→</span></a></div>
+    </div>
+  </div>
+  <div class="wrap strip" style="border-top:1px solid var(--line)">
+    <div class="it"><svg data-i="headset"></svg><p>Réalité mixte<br>immersive</p></div>
+    <div class="it"><svg data-i="sliders"></svg><p>Ambiance multisensorielle<br>(sons, parfums, température)</p></div>
+    <div class="it"><svg data-i="chair"></svg><p>Confort et intimité<br>haut de gamme</p></div>
+    <div class="it"><svg data-i="cloche"></svg><p>Un service personnalisé<br>tout au long du voyage</p></div>
+  </div>
+  <div style="height:60px"></div>
+</section>
+
+<!-- GASTRONOMIE -->
+<section class="page" id="p-gastronomie">
+  <div class="hero">
+    <div class="pic" style="background-image:url(img/hero-gastronomie.jpg)" role="img" aria-label="Saint-Jacques snackée et fleurs comestibles"></div>
+    <div class="wrap"><div class="txt">
+      <p class="kicker">Notre gastronomie</p>
+      <h1>Une cuisine<br>de voyage</h1>
+      <div class="bar"></div>
+      <p class="lead">Des menus semi-gastronomiques inspirés des saveurs du monde, pensés pour sublimer chaque destination.</p>
+    </div></div>
+  </div>
+  <div class="wrap strip">
+    <div class="it"><svg data-i="chef"></svg><p>Cuisine<br>semi-gastronomique</p></div>
+    <div class="it"><svg data-i="leaf"></svg><p>Produits frais<br>et de saison</p></div>
+    <div class="it"><svg data-i="cloche"></svg><p>Menus inspirés<br>des cultures du monde</p></div>
+    <div class="it"><svg data-i="globe"></svg><p>Options végétariennes<br>et adaptées</p></div>
+  </div>
+  <div class="wrap sec">
+    <div class="stitle"><h2>Nos menus par destination</h2></div>
+    <div class="grid4" id="menus"></div>
+  </div>
+</section>
+
+<!-- EVENEMENTS -->
+<section class="page" id="p-evenements">
+  <div class="hero">
+    <div class="pic" style="background-image:url(img/hero-evenements.jpg)" role="img" aria-label="Grande table dressée face au mont Fuji"></div>
+    <div class="wrap"><div class="txt">
+      <p class="kicker">Événements</p>
+      <h1>Vos événements<br>en immersion</h1>
+      <div class="bar"></div>
+      <p class="lead">Un cadre unique et innovant pour vos événements professionnels et privés.</p>
+    </div></div>
+  </div>
+  <div class="wrap strip">
+    <div class="it"><svg data-i="people"></svg><p>Événements sur mesure<br>(jusqu'à la privatisation)</p></div>
+    <div class="it"><svg data-i="calendar"></svg><p>Privatisation<br>de capsules</p></div>
+    <div class="it"><svg data-i="cloche"></svg><p>Menus personnalisés<br>selon votre destination</p></div>
+    <div class="it"><svg data-i="headset"></svg><p>Expérience immersive<br>et fédératrice</p></div>
+  </div>
+  <div class="wrap sec">
+    <div class="stitle"><h2>Nos formules événementielles</h2></div>
+    <div class="grid4" id="events"></div>
+  </div>
+  <div class="wrap" style="padding-bottom:80px">
+    <div class="band">
+      <div>
+        <p class="kicker">Team building</p>
+        <h2 style="margin-top:14px">Le team building<br>qui rassemble</h2>
+        <div class="bar"></div>
+        <p class="lead">Loin de l'éternel bowling-restaurant, offrez à vos équipes un vrai moment ensemble.</p>
+      </div>
+      <div>
+        <ul class="checks" style="margin-top:0">
+          <li><svg data-i="check"></svg>Une capsule de 10 personnes : toute l'équipe autour de la même table.</li>
+          <li><svg data-i="check"></svg>Un apéritif collectif avant le voyage, pour que tout le monde se retrouve.</li>
+          <li><svg data-i="check"></svg>Un formulaire régimes et allergies envoyé à chaque participant.</li>
+          <li><svg data-i="check"></svg>Une immersion douce, accessible à tous, avec ou sans casque.</li>
+          <li><svg data-i="check"></svg>Un interlocuteur unique et une formule clé en main.</li>
+        </ul>
+        <a href="#reserver" class="btn" data-cap="evenement">Demander un devis <span class="arr">→</span></a>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- RESERVATION -->
+<section class="page" id="p-reserver">
+  <div class="wrap resa">
+    <div class="left">
+      <p class="kicker">Réservation</p>
+      <h1>Vivez votre<br>prochaine escale</h1>
+      <div class="bar"></div>
+      <p class="lead">Réservez votre expérience gastronomique immersive en quelques étapes.</p>
+      <div class="ph"><img src="img/capsule-2.jpg" alt="Capsule pour deux personnes ouverte sur le Japon"></div>
+      <div class="mini">
+        <div><svg data-i="calendar"></svg>Réservation<br>en ligne</div>
+        <div><svg data-i="cloche"></svg>Menu<br>sur mesure</div>
+        <div><svg data-i="headset"></svg>Immersion<br>à 360°</div>
+        <div><svg data-i="duo"></svg>En couple, entre amis<br>ou en groupe</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="prog">
+        <div class="s on" data-s="1"><div class="n">1</div><span>Votre expérience</span></div>
+        <div class="s" data-s="2"><div class="n">2</div><span>Vos informations</span></div>
+        <div class="s" data-s="3"><div class="n">3</div><span>Confirmation</span></div>
+      </div>
+
+      <div id="st1">
+        <div class="fs"><h4>1. Choisissez votre destination</h4><div class="dpick" id="dpick"></div></div>
+        <div class="fs two">
+          <div class="fld"><label for="date">2. Sélectionnez une date</label><input type="date" id="date"></div>
+          <div class="fld"><label for="slot">3. Choisissez un créneau</label><select id="slot"><option>19:00</option><option selected>20:00</option><option>21:30</option></select></div>
+        </div>
+        <div class="fs caprow">
+          <div style="grid-column:1/4"><h4 style="margin-bottom:12px">4. Votre capsule</h4></div>
+          <button type="button" class="copt" data-c="duo" style="grid-row:2"><svg data-i="duo"></svg><b>Duo</b>(2 pers.)</button>
+          <button type="button" class="copt" data-c="groupe" style="grid-row:2"><svg data-i="people"></svg><b>Groupe</b>(3 à 5 pers.)</button>
+          <button type="button" class="copt" data-c="evenement" style="grid-row:2"><svg data-i="crowd"></svg><b>Événement</b>(6 à 10 pers.)</button>
+          <div class="cv" style="grid-row:1/3;grid-column:4;align-self:end"><span class="cvlabel">5. Nombre de convives</span><div class="stepper"><button type="button" id="minus" aria-label="Moins">−</button><output id="guests">2</output><button type="button" id="plus" aria-label="Plus">+</button></div></div>
+        </div>
+        <div class="actions"><button class="btn" id="go2">Continuer la réservation <span class="arr">→</span></button></div>
+        <div class="err" id="err1"></div>
+      </div>
+
+      <div id="st2" hidden>
+        <div class="fs two">
+          <div class="fld"><label for="prenom">Prénom</label><input id="prenom" autocomplete="given-name"></div>
+          <div class="fld"><label for="nom">Nom</label><input id="nom" autocomplete="family-name"></div>
+          <div class="fld"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email" placeholder="vous@exemple.fr"></div>
+          <div class="fld"><label for="tel">Téléphone</label><input id="tel" type="tel" autocomplete="tel" placeholder="06 00 00 00 00"></div>
+          <div class="fld"><label for="occ">Occasion</label><select id="occ"><option>Aucune en particulier</option><option>Anniversaire</option><option>Rendez-vous en amoureux</option><option>Demande en mariage</option><option>Sortie entre amis</option><option>Événement d'entreprise</option></select></div>
+          <div class="fld"><label for="lun">Lunettes de vue</label><select id="lun"><option>Non</option><option>Oui, au moins un convive</option></select></div>
+          <div class="fld" style="grid-column:1/-1"><label for="notes">Allergies et régimes alimentaires</label><textarea id="notes" placeholder="Ex. : un végétarien, une allergie aux fruits à coque…"></textarea></div>
+        </div>
+        <div class="actions"><button class="btn ghost" id="back1">← Retour</button><button class="btn" id="go3">Vérifier ma réservation <span class="arr">→</span></button></div>
+        <div class="err" id="err2"></div>
+      </div>
+
+      <div id="st3" hidden>
+        <div class="recap" id="recap"></div>
+        <div class="actions"><button class="btn ghost" id="back2">← Modifier</button><button class="btn" id="confirm">Confirmer la réservation <span class="arr">→</span></button></div>
+        <div id="doneBox"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
 <footer>
   <div class="wrap">
     <div class="top">
-      <div><img class="logo" src="img/logo.jpg" alt="ESCALE – Le monde à portée de table"></div>
-      <div><h4>Explorer</h4><a href="#concept">Le concept</a><a href="#destinations">Destinations</a><a href="#capsules">Capsules</a><a href="#entreprises">Entreprises</a></div>
-      <div><h4>Nous trouver</h4><p>Paris</p><p>Du mardi au dimanche</p><p>Services à 19 h et 21 h 30</p></div>
+      <div><div class="lg"><img class="ic" src="img/icone-noir.png" alt=""><img class="wm" src="img/wordmark.png" alt="ESCALE"></div><p class="tag">Le monde à portée de table.</p></div>
+      <div><h4>Explorer</h4><a href="#concept">Concept</a><a href="#destinations">Destinations</a><a href="#capsules">Nos capsules</a><a href="#gastronomie">Gastronomie</a><a href="#evenements">Événements</a></div>
+      <div><h4>Nous trouver</h4><p>Paris</p><p>Du mardi au dimanche</p><p>Services à 19 h, 20 h et 21 h 30</p></div>
       <div><h4>Suivez le voyage</h4><p>Instagram : @escale.paris</p><p>TikTok : @escale.paris</p><p>contact@escale-paris.fr</p></div>
     </div>
-    <div class="bottom">
-      <span>© 2026 ESCALE · Le monde à portée de table.</span>
-      <span>Projet étudiant fictif · ICN Business School · Sabria Houngbo, Sara Sautron, Welson Raoelison</span>
-    </div>
+    <div class="bot"><span>© 2026 ESCALE · Le monde à portée de table.</span><span>Projet étudiant fictif · ICN Business School · Sabria Houngbo, Sara Sautron, Welson Raoelison</span></div>
   </div>
 </footer>
 
-<div class="lightbox" id="lb"><img id="lbimg" alt=""></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="mbox"><button class="close" id="mclose" aria-label="Fermer">×</button><div id="mcontent"></div></div></div>
 
 <script>
-const nav=document.getElementById('nav');
-addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
-const links=document.getElementById('links');
-document.getElementById('burger').onclick=()=>links.classList.toggle('open');
-links.querySelectorAll('a').forEach(a=>a.onclick=()=>links.classList.remove('open'));
+const ICONS={
+headset:'<path d="M8 22c0-5 4-8 9-8h30c5 0 9 3 9 8v10c0 6-4 10-10 10h-6c-3 0-5-2-7-4l-1-1c-1-1-3-1-4 0l-1 1c-2 2-4 4-7 4h-2C12 42 8 38 8 32z"/><path d="M8 26H5M56 26h3"/>',
+sliders:'<path d="M8 18h48M8 32h48M8 46h48"/><circle cx="24" cy="18" r="5" fill="#fff"/><circle cx="40" cy="32" r="5" fill="#fff"/><circle cx="22" cy="46" r="5" fill="#fff"/>',
+cloche:'<path d="M10 44h44M12 44c0-12 9-20 20-20s20 8 20 20"/><path d="M32 24v-4M28 20h8M6 50h52"/>',
+people:'<circle cx="20" cy="22" r="7"/><circle cx="44" cy="22" r="7"/><circle cx="32" cy="18" r="6"/><path d="M6 48c0-8 6-13 14-13 4 0 7 1 9 3M58 48c0-8-6-13-14-13-4 0-7 1-9 3M20 48c0-9 5-14 12-14s12 5 12 14z"/>',
+duo:'<circle cx="23" cy="21" r="7"/><circle cx="41" cy="21" r="7"/><path d="M9 47c0-9 6-15 14-15s14 6 14 15zM27 47c0-9 6-15 14-15s14 6 14 15"/>',
+crowd:'<circle cx="12" cy="24" r="5"/><circle cx="24" cy="20" r="5"/><circle cx="40" cy="20" r="5"/><circle cx="52" cy="24" r="5"/><circle cx="32" cy="24" r="5"/><path d="M3 46c0-7 4-12 9-12M61 46c0-7-4-12-9-12M14 46c0-8 4-13 10-13 3 0 5 1 6 2M50 46c0-8-4-13-10-13-3 0-5 1-6 2M22 48c0-8 4-13 10-13s10 5 10 13z"/>',
+globe:'<circle cx="32" cy="32" r="22"/><path d="M10 32h44M32 10c-7 7-10 14-10 22s3 15 10 22M32 10c7 7 10 14 10 22s-3 15-10 22M14 20h36M14 44h36"/>',
+lotus:'<path d="M32 48c-6-6-8-14-0-26 8 12 6 20 0 26zM32 48c-10 0-18-6-20-16 9 0 15 4 20 16zM32 48c10 0 18-6 20-16-9 0-15 4-20 16zM32 48c-12 2-22-2-26-8 8-3 16-1 22 4M32 48c12 2 22-2 26-8-8-3-16-1-22 4"/>',
+calendar:'<rect x="10" y="14" width="44" height="40" rx="3"/><path d="M10 24h44M20 8v10M44 8v10"/>',
+chair:'<path d="M18 30V18c0-4 3-6 6-6h16c3 0 6 2 6 6v12"/><path d="M12 30c3 0 5 2 5 5v4h30v-4c0-3 2-5 5-5s3 2 3 5v9H9v-9c0-3 1-5 3-5zM14 44v8M50 44v8"/>',
+compass:'<circle cx="32" cy="32" r="22"/><path d="M40 24l-5 11-11 5 5-11z"/>',
+fork:'<path d="M22 10v16c0 3 2 5 4 5v23M18 10v14M26 10v14M30 10v14c0 3-2 5-4 5"/><path d="M42 54V10c-5 3-7 10-7 18 0 3 2 5 4 5h3"/>',
+chef:'<path d="M20 40c-6 0-10-5-10-10 0-6 5-10 10-10 1-6 6-10 12-10s11 4 12 10c5 0 10 4 10 10 0 5-4 10-10 10z"/><path d="M20 40v12h24V40M20 46h24"/>',
+leaf:'<path d="M32 54V30M32 40c-10 0-18-6-20-18 10 0 18 5 20 18zM32 34c2-12 10-18 20-18-1 12-9 18-20 18z"/>',
+check:'<path d="M14 33l11 11 25-25"/>'
+};
+document.querySelectorAll('svg[data-i]').forEach(s=>{s.setAttribute('viewBox','0 0 64 64');s.setAttribute('fill','none');s.setAttribute('stroke','#111');s.setAttribute('stroke-width',s.dataset.i==='check'?'4':'2.2');s.setAttribute('stroke-linecap','round');s.setAttribute('stroke-linejoin','round');s.setAttribute('aria-hidden','true');s.innerHTML=ICONS[s.dataset.i]||''});
 
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const DEST=[
+ {id:'japon',nom:'Japon',img:'img/dest-japon.jpg',plat:'img/plat-japon.jpg',court:'Entre traditions, raffinement et saveurs umami.',gout:'Délicatesse, umami et raffinement.',
+  desc:'Une pagode au bord du lac, le mont Fuji au loin et des pétales de cerisier qui tombent autour de votre table. Parfum de fleur de cerisier et de thé vert, son de la brise et des carillons.',
+  menu:[['Entrée','Bouillon dashi au yuzu et légumes croquants'],['Plat','Tataki de thon rouge au sésame, riz vinaigré et fleurs comestibles'],['Dessert','Mochi glacé au thé matcha']]},
+ {id:'polynesie',nom:'Polynésie',img:'img/dest-polynesie.jpg',plat:'img/plat-polynesie.jpg',court:'Une escapade paradisiaque aux saveurs exotiques.',gout:'Fraîcheur, exotisme et douceur.',
+  desc:'Le lagon turquoise, les bungalows sur pilotis et le soleil qui se couche sur les montagnes. Brise tiède, bruit des vagues et parfum de fleur de tiaré.',
+  menu:[['Entrée','Poisson cru au lait de coco et citron vert'],['Plat','Mahi-mahi grillé, riz parfumé et sauce mangue'],['Dessert','Ananas rôti à la vanille']]},
+ {id:'fondsmarins',nom:'Fonds marins',img:'img/dest-fondsmarins.jpg',plat:'img/plat-fondsmarins.jpg',court:'Plongez dans un univers aquatique fascinant et sensoriel.',gout:'Saveurs iodées et trésors de l’océan.',
+  desc:'Coraux lumineux, tortues et bancs de poissons : un dîner au fond de l’océan, sans vous mouiller. Fraîcheur légère, sons sous-marins et notes iodées.',
+  menu:[['Entrée','Saint-Jacques snackées, écume iodée'],['Plat','Queue de homard rôtie, beurre aux algues'],['Dessert','Perles d’agrumes et sorbet citron vert']]},
+ {id:'italie',nom:'Italie',img:'img/dest-italie.jpg',plat:'img/plat-italie.jpg',court:'La dolce vita dans une expérience gourmande et ensoleillée.',gout:'Authenticité, générosité et élégance.',
+  desc:'Un village de la côte amalfitaine au coucher du soleil, les citronniers au-dessus de la table. Chaleur douce, parfum de citron et de basilic, mandoline au loin.',
+  menu:[['Entrée','Burrata crémeuse, tomates anciennes et tuile de parmesan'],['Plat','Risotto aux fruits de mer et citron d’Amalfi'],['Dessert','Tiramisu revisité']]}
+];
+const EVT=[
+ {t:'Entreprises',img:'img/evt-entreprises.jpg',p:'Séminaires, team building, lancements de produit, soirées d’équipe.',b:'En savoir plus',k:'entreprises'},
+ {t:'Événements privés',img:'img/evt-prives.jpg',p:'Anniversaires, demandes en mariage, dîners d’exception.',b:'En savoir plus',k:'prives'},
+ {t:'Groupes & célébrations',img:'img/evt-groupes.jpg',p:'Sorties entre amis, événements familiaux, moments uniques à partager.',b:'En savoir plus',k:'groupes'},
+ {t:'Sur-mesure',img:'img/evt-surmesure.jpg',p:'Un événement 100 % personnalisé, selon vos envies et vos objectifs.',b:'Nous contacter',k:'surmesure'}
+];
+const EVT_TXT={
+ entreprises:['Toute votre équipe réunie dans notre capsule de 10 personnes, ou plusieurs capsules privatisées pour les plus grands groupes. Apéritif collectif, menu adapté aux régimes de chacun et interlocuteur unique.',['Capsule 10 personnes ou privatisation','Apéritif collectif avant le voyage','Formulaire régimes et allergies','Devis sous 48 h']],
+ prives:['Un anniversaire, une demande en mariage ou un dîner à deux qui sort de l’ordinaire. Nous préparons la destination, le menu et une attention surprise.',['Capsule 2 ou 5 personnes','Décor et message personnalisés','Souvenir photo du voyage','Gâteau ou champagne sur demande']],
+ groupes:['Entre amis ou en famille, choisissez ensemble votre destination et partagez un moment unique, chacun à son rythme.',['Capsule 5 ou 10 personnes','Une destination choisie ensemble','Menus enfants et végétariens','Idéal pour les anniversaires']],
+ surmesure:['Une destination inédite, un menu signature, une privatisation complète : construisons ensemble votre événement.',['Privatisation totale du restaurant','Destination ou décor sur mesure','Menu signature avec le chef','Accompagnement de A à Z']]
+};
 
-const lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg');
-document.querySelectorAll('.gallery figure img').forEach(i=>i.onclick=()=>{lbimg.src=i.src;lbimg.alt=i.alt;lb.classList.add('on')});
-lb.onclick=()=>lb.classList.remove('on');
-addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on')});
+/* Home tiles */
+document.getElementById('homeTiles').innerHTML=DEST.map(d=>`<div class="tile" data-d="${d.id}" tabindex="0" role="button" aria-label="${d.nom}"><img src="${d.img}" alt="${d.nom}" loading="lazy"><span>${d.nom}</span></div>`).join('');
+/* Destinations carousel */
+document.getElementById('track').innerHTML=DEST.map(d=>`<article class="card"><div class="im"><img src="${d.img}" alt="Capsule ESCALE : ${d.nom}" loading="lazy"></div><div class="bd"><h3>${d.nom}</h3><p>${d.court}</p><button class="btn" data-d="${d.id}">Découvrir <span class="arr">→</span></button></div></article>`).join('');
+/* Menus */
+document.getElementById('menus').innerHTML=DEST.map(d=>`<article class="card"><div class="im"><img src="${d.plat}" alt="Plat du menu ${d.nom}" loading="lazy"></div><div class="bd"><h3>${d.nom}</h3><p>${d.gout}</p><button class="btn" data-m="${d.id}">Découvrir le menu <span class="arr">→</span></button></div></article>`).join('');
+/* Events */
+document.getElementById('events').innerHTML=EVT.map(e=>`<article class="card"><div class="im"><img src="${e.img}" alt="${e.t}" loading="lazy"></div><div class="bd"><h3>${e.t}</h3><p>${e.p}</p><button class="btn" data-e="${e.k}">${e.b} <span class="arr">→</span></button></div></article>`).join('');
 
-document.querySelectorAll('[data-type="entreprise"]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('type').value='entreprise'}));
+/* Carousel */
+const track=document.getElementById('track'),dots=document.getElementById('dots');
+dots.innerHTML=DEST.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('');
+const step=()=>track.querySelector('.card').offsetWidth+18;
+document.getElementById('prev').onclick=()=>track.scrollBy({left:-step(),behavior:'smooth'});
+document.getElementById('next').onclick=()=>track.scrollBy({left:step(),behavior:'smooth'});
+track.addEventListener('scroll',()=>{const i=Math.round(track.scrollLeft/step());dots.querySelectorAll('i').forEach((d,j)=>d.classList.toggle('on',j===Math.min(i,DEST.length-1)))},{passive:true});
 
-const d=document.querySelector('input[type=date]');d.min=new Date().toISOString().slice(0,10);
-document.getElementById('form').addEventListener('submit',e=>{
-  e.preventDefault();
-  const f=e.target, ok=document.getElementById('ok');
-  if(!f.nom.value.trim()||!f.email.value.includes('@')||!f.date.value){ok.textContent='Merci de renseigner votre nom, votre e-mail et la date.';ok.classList.add('on');return}
-  ok.textContent='Merci '+f.nom.value.trim()+' ! Ceci est une démonstration : aucune réservation n’est enregistrée. Destination choisie : '+f.dest.value+'.';
-  ok.classList.add('on');
+/* Modal */
+const modal=document.getElementById('modal'),mc=document.getElementById('mcontent');
+function openModal(html){mc.innerHTML=html;modal.classList.add('on');document.body.style.overflow='hidden'}
+function closeModal(){modal.classList.remove('on');document.body.style.overflow=''}
+document.getElementById('mclose').onclick=closeModal;
+modal.onclick=e=>{if(e.target===modal)closeModal()};
+addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const menuList=d=>`<ol>${d.menu.map(m=>`<li data-k="${m[0]}">${m[1]}</li>`).join('')}</ol>`;
+function showDest(id){const d=DEST.find(x=>x.id===id);openModal(`<img src="${d.img}" alt="${d.nom}"><div class="in"><p class="kicker">Destination</p><h3 style="margin-top:8px">${d.nom}</h3><p class="lead">${d.desc}</p><h4 style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:600">Le menu</h4>${menuList(d)}<a href="#reserver" class="btn" data-pick="${d.id}">Réserver cette destination <span class="arr">→</span></a></div>`)}
+function showMenu(id){const d=DEST.find(x=>x.id===id);openModal(`<img src="${d.plat}" alt="Menu ${d.nom}"><div class="in"><p class="kicker">Menu</p><h3 style="margin-top:8px">${d.nom}</h3><p class="lead">${d.gout} Options végétariennes et adaptations aux allergies sur demande.</p>${menuList(d)}<a href="#reserver" class="btn" data-pick="${d.id}">Réserver ce voyage <span class="arr">→</span></a></div>`)}
+function showEvt(k){const e=EVT.find(x=>x.k===k),t=EVT_TXT[k];openModal(`<img src="${e.img}" alt="${e.t}"><div class="in"><p class="kicker">Formule</p><h3 style="margin-top:8px">${e.t}</h3><p class="lead">${t[0]}</p><ul class="checks">${t[1].map(x=>`<li><svg viewBox="0 0 64 64" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 33l11 11 25-25"/></svg>${x}</li>`).join('')}</ul><a href="#reserver" class="btn" data-cap="${k==='prives'?'duo':k==='groupes'?'groupe':'evenement'}">${k==='surmesure'?'Nous contacter':'Réserver'} <span class="arr">→</span></a></div>`)}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-d],[data-m],[data-e],[data-pick],[data-cap]');if(!t)return;
+  if(t.dataset.d){showDest(t.dataset.d)}
+  else if(t.dataset.m){showMenu(t.dataset.m)}
+  else if(t.dataset.e){showEvt(t.dataset.e)}
+  else{ if(t.dataset.pick)selDest(t.dataset.pick); if(t.dataset.cap)selCap(t.dataset.cap); closeModal(); }
 });
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList.contains('tile'))showDest(e.target.dataset.d)});
+
+/* Router */
+const PAGES=['accueil','concept','destinations','capsules','gastronomie','evenements','reserver'];
+function route(){
+  let p=location.hash.slice(1);if(!PAGES.includes(p))p='accueil';
+  document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));
+  document.querySelectorAll('.menu a').forEach(a=>a.classList.toggle('active',a.dataset.p===p));
+  document.getElementById('menu').classList.remove('open');
+  scrollTo({top:0,behavior:'instant'});
+  document.title=(p==='accueil'?'ESCALE – Le monde à portée de table':'ESCALE – '+({concept:'Concept',destinations:'Destinations',capsules:'Nos capsules',gastronomie:'Gastronomie',evenements:'Événements',reserver:'Réservation'})[p]);
+}
+addEventListener('hashchange',route);route();
+document.getElementById('burger').onclick=()=>document.getElementById('menu').classList.toggle('open');
+const nav=document.getElementById('nav');addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10),{passive:true});
+
+/* Reservation */
+const R={dest:'japon',cap:'duo',guests:2};
+const CAPS={duo:[2,2,'Duo (2 pers.)'],groupe:[3,5,'Groupe (3 à 5 pers.)'],evenement:[6,10,'Événement (6 à 10 pers.)']};
+document.getElementById('dpick').innerHTML=DEST.map(d=>`<button type="button" class="dopt" data-sel="${d.id}"><img src="${d.img}" alt=""><span>${d.nom}</span></button>`).join('');
+function selDest(id){R.dest=id;document.querySelectorAll('.dopt').forEach(b=>b.classList.toggle('sel',b.dataset.sel===id))}
+function selCap(c){R.cap=c;const [mn,mx]=CAPS[c];R.guests=Math.min(Math.max(R.guests,mn),mx);document.getElementById('guests').value=R.guests;document.getElementById('guests').textContent=R.guests;document.querySelectorAll('.copt').forEach(b=>b.classList.toggle('sel',b.dataset.c===c))}
+document.getElementById('dpick').addEventListener('click',e=>{const b=e.target.closest('.dopt');if(b)selDest(b.dataset.sel)});
+document.querySelectorAll('.copt').forEach(b=>b.onclick=()=>selCap(b.dataset.c));
+function setG(n){const [mn,mx]=CAPS[R.cap];R.guests=Math.min(Math.max(n,mn),mx);document.getElementById('guests').textContent=R.guests}
+document.getElementById('minus').onclick=()=>setG(R.guests-1);
+document.getElementById('plus').onclick=()=>setG(R.guests+1);
+selDest('japon');selCap('duo');
+const date=document.getElementById('date');
+const today=new Date();date.min=today.toISOString().slice(0,10);
+const def=new Date(today.getTime()+7*864e5);date.value=def.toISOString().slice(0,10);
+function show(n){[1,2,3].forEach(i=>{document.getElementById('st'+i).hidden=i!==n;const s=document.querySelector(`.prog .s[data-s="${i}"]`);s.classList.toggle('on',i===n);s.classList.toggle('done',i<n)});document.querySelector('.panel').scrollIntoView({behavior:'smooth',block:'start'})}
+const fmtDate=v=>{try{return new Date(v+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}catch(e){return v}};
+document.getElementById('go2').onclick=()=>{const er=document.getElementById('err1');if(!date.value){er.textContent='Merci de choisir une date.';return}er.textContent='';show(2)};
+document.getElementById('back1').onclick=()=>show(1);
+document.getElementById('back2').onclick=()=>show(2);
+document.getElementById('go3').onclick=()=>{
+  const v=id=>document.getElementById(id).value.trim(),er=document.getElementById('err2');
+  if(!v('prenom')||!v('nom')){er.textContent='Merci d’indiquer votre prénom et votre nom.';return}
+  if(!/^\S+@\S+\.\S+$/.test(v('email'))){er.textContent='Merci d’indiquer une adresse e-mail valide.';return}
+  er.textContent='';
+  const d=DEST.find(x=>x.id===R.dest);
+  const rows=[['Destination',d.nom],['Date',fmtDate(date.value)],['Créneau',document.getElementById('slot').value],['Capsule',CAPS[R.cap][2]],['Convives',R.guests],['Occasion',v('occ')],['Nom',v('prenom')+' '+v('nom')],['E-mail',v('email')],['Lunettes de vue',v('lun')],['Allergies et régimes',v('notes')||'Aucun']];
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  document.getElementById('recap').innerHTML=rows.map(r=>`<div><span>${r[0]}</span><b>${esc(r[1])}</b></div>`).join('');
+  document.getElementById('doneBox').innerHTML='';document.getElementById('confirm').hidden=false;document.getElementById('back2').hidden=false;
+  show(3);
+};
+document.getElementById('confirm').onclick=()=>{
+  const d=DEST.find(x=>x.id===R.dest),p=document.getElementById('prenom').value.trim().replace(/[&<>"]/g,'');
+  document.getElementById('confirm').hidden=true;document.getElementById('back2').hidden=true;
+  document.getElementById('doneBox').innerHTML=`<div class="done-msg"><h3>Bon voyage, ${p} !</h3><p>Votre escale « ${d.nom} » du ${fmtDate(date.value)} à ${document.getElementById('slot').value} est enregistrée.</p><p class="note">Site de démonstration : aucune réservation réelle n’est envoyée.</p></div>`;
+};
 </script>
 </body>
 </html>
